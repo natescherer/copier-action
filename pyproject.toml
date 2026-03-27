@@ -22,9 +22,9 @@ dependencies = [
 ]
 
 [project.urls]
+"Bug Tracker" = "https://github.com/copier-org/copier-action/issues"
 homepage = "https://github.com/copier-org/copier-action"
 repository = "https://github.com/copier-org/copier-action"
-"Bug Tracker" = "https://github.com/copier-org/copier-action/issues"
 
 [project.scripts]
 copier = "copier.__main__:CopierApp.run"
@@ -38,8 +38,47 @@ dev = [
   "pre-commit==4.5.1",
   "ruff==0.15.7",
   "rumdl==0.1.59",
-  "taplo==0.9.3",
+  "tombi==0.9.9",
 ]
+
+[tool.codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = ".git*,*.svg,*.lock,*.css,pyproject.toml,.mypy_cache,.venv"
+check-hidden = true
+ignore-regex = '\bla vie\b'
+ignore-words-list = "ans"
+
+[tool.commitizen]
+annotated_tag = true
+changelog_incremental = true
+tag_format = "v$version"
+update_changelog_on_bump = true
+version = "0.1.0"
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+  "plumbum.*",
+  "poethepoet.app",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "copier._subproject",
+  "copier._template",
+  "copier._tools",
+  "copier._user_data",
+  "copier._vcs",
+  "copier.subproject",
+  "copier.template",
+  "copier.tools",
+  "copier.user_data",
+  "copier.vcs",
+]
+warn_return_any = false
 
 [tool.poe.tasks.dev-setup]
 script = "devtasks:dev_setup"
@@ -71,9 +110,9 @@ extend-select = [
   "PGH",
   "PTH",
   "UP",
-  "W505", # doc-line-too-long
+  "W505",  # doc-line-too-long
 ]
-extend-ignore = ['B028', "B904", "D105", "D107", "E501"]
+extend-ignore = ["B028", "B904", "D105", "D107", "E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
@@ -91,45 +130,6 @@ ignore-overlong-task-comments = true
 
 [tool.ruff.lint.pyupgrade]
 keep-runtime-typing = true
-
-[tool.mypy]
-strict = true
-
-[[tool.mypy.overrides]]
-module = [
-  "plumbum.*",
-  "poethepoet.app",
-]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = [
-  "copier._subproject",
-  "copier._template",
-  "copier._tools",
-  "copier._user_data",
-  "copier._vcs",
-  "copier.subproject",
-  "copier.template",
-  "copier.tools",
-  "copier.user_data",
-  "copier.vcs",
-]
-warn_return_any = false
-
-[tool.commitizen]
-annotated_tag = true
-changelog_incremental = true
-tag_format = "v$version"
-update_changelog_on_bump = true
-version = "0.1.0"
-
-[tool.codespell]
-# Ref: https://github.com/codespell-project/codespell#using-a-config-file
-skip = '.git*,*.svg,*.lock,*.css,pyproject.toml,.mypy_cache,.venv'
-check-hidden = true
-ignore-regex = '\bla vie\b'
-ignore-words-list = 'ans'
 
 [tool.rumdl]
 flavor = "github"
