@@ -35,9 +35,7 @@ runs:
       with:
         pip-install: copier
     - name: Validate Inputs
-      # 'cd' is being used below (and in other run steps) for Windows runner compatibility
       run: |
-        cd ${{ github.action_path }}
-        cd copier-action
-        python validate_inputs.py --subcommand ${{ inputs.subcommand }}
+        python copier-action/validate_inputs.py --subcommand ${{ inputs.subcommand }}
       shell: bash
+      working-directory: ${{ github.action_path }}
