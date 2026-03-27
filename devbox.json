@@ -12,14 +12,9 @@
     "GIT_EXTERNAL_DIFF": "difft"
   },
   "shell": {
-    "init_hook": [
-      "uv sync --frozen",
-      "uv run pre-commit install"
-    ],
+    "init_hook": ["uv sync --frozen", "uv run pre-commit install"],
     "scripts": {
-      "test": [
-        "act -W .github/workflows/ci.yml"
-      ]
+      "test": ["act -W .github/workflows/ci.yml"]
     }
   }
 }

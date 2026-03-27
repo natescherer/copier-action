@@ -14,45 +14,27 @@
     "enabled": false
   },
   "rangeStrategy": "update-lockfile",
-  "labels": [
-    "dependencies"
-  ],
+  "labels": ["dependencies"],
   "packageRules": [
     {
-      "matchManagers": [
-        "pep621"
-      ],
-      "matchDepTypes": [
-        "dependency-groups"
-      ],
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
       "rangeStrategy": "pin"
     },
     {
-      "matchCategories": [
-        "python"
-      ],
-      "addLabels": [
-        "python"
-      ]
+      "matchCategories": ["python"],
+      "addLabels": ["python"]
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "addLabels": [
-        "github_actions"
-      ]
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github_actions"]
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/(^|/)devbox\\.json$/"
-      ],
-      "matchStrings": [
-        "/(?<currentValue>\\d+(\\.\\d+)*)/.schema/devbox.schema.json"
-      ],
+      "managerFilePatterns": ["/(^|/)devbox\\.json$/"],
+      "matchStrings": ["/(?<currentValue>\\d+(\\.\\d+)*)/.schema/devbox.schema.json"],
       "datasourceTemplate": "github-tags",
       "packageNameTemplate": "jetify-com/devbox",
       "depNameTemplate": "devbox",
@@ -60,12 +42,8 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "**/*"
-      ],
-      "matchStrings": [
-        "docker.io/jetpackio/devbox:(?<currentValue>\\d+(\\.\\d+)*)"
-      ],
+      "managerFilePatterns": ["**/*"],
+      "matchStrings": ["docker.io/jetpackio/devbox:(?<currentValue>\\d+(\\.\\d+)*)"],
       "datasourceTemplate": "github-tags",
       "packageNameTemplate": "jetify-com/devbox",
       "depNameTemplate": "devbox",

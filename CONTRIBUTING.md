@@ -9,8 +9,11 @@ Report bugs at <https://github.com/copier-org/copier-action/issues>.
 
 If you are reporting a bug, please include:
 
-- Which [runner image](https://github.com/actions/runner-images) you are using, if cloud hosted.
-  - If you are using a [self-hosted runner](https://github.com/actions/runner-images), instead provide as much information as you can about how your private runner is set up.
+- Which [runner image](https://github.com/actions/runner-images) you are using, if cloud
+  hosted.
+  - If you are using a [self-hosted runner](https://github.com/actions/runner-images),
+    instead provide as much information as you can about how your private runner is set
+    up.
 - Detailed steps to reproduce the bug.
 
 ## Fix Bugs
@@ -50,7 +53,7 @@ Feel free to discuss with our community through
 The recommended way is:
 
 1. Click on
-    [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/copier-org/copier-action)
+   [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/copier-org/copier-action)
 1. Wait until the terminal that pops up is ready.
 1. Accept the direnv pop-ups that appear.
 
@@ -74,8 +77,9 @@ don't have enough permissions, you work on Windows, or you just don't want to ad
 another package manager to your system. We believe Devbox/Nix is awesome enough so as to
 be the default tool for almost any developer, but we respect your choice.
 
-You can use standard Python tooling such as [uv]() and a valid Python installation
-installed in an imperative manner of your choice, e.g. using uv as well.
+You can use standard Python tooling such as [uv](https://docs.astral.sh/uv/) and a valid
+Python installation installed in an imperative manner of your choice, e.g. using uv as
+well.
 
 However, you won't be able to auto-lint or auto-format code without Devbox/Nix. If you
 don't have Nix installed but you have Docker or Podman, you can run `poe lint` and get
@@ -85,8 +89,6 @@ formatters.
 If you still don't have Docker or Podman, don't worry. You can push your changes without
 formatting. As long as you give Copier maintainers permissions to change your PR, a bot
 will kindly auto-format code for you and push it back to your branch.
-
-[uv]: https://docs.astral.sh/uv/
 
 ## Get Started
 
@@ -111,9 +113,10 @@ Ready to contribute? Here's how to set up the project for local development.
     devbox shell
     ```
 
-    This process will take some time to load for the 1st time. It will download all
-    development dependencies, including [uv][], and it will use it to create a
-    virtualenv and install Copier with all its development dependencies too.
+   This process will take some time to load for the 1st time. It will download all
+   development dependencies, including [uv][https://docs.astral.sh/uv/], and it will use
+   it to create a virtualenv and install Copier with all its development dependencies
+   too.
 
 1. Create a branch for local development:
 
@@ -130,27 +133,25 @@ Ready to contribute? Here's how to set up the project for local development.
     uv run poe lint
     ```
 
-    !!! note
+   > [!NOTE] > If you get fails due to >
+   `pexpect.exceptions.TIMEOUT: <pexpect.popen_spawn.PopenSpawn object at 0x............>`,
+   > you can adjust the timeout to a longer one (default: `10`), or remove the > timeout
+   (`0`). Either add it as an argument in your command:
 
-        If you get fails due to
-        `pexpect.exceptions.TIMEOUT: <pexpect.popen_spawn.PopenSpawn object at 0x............>`,
-        you can adjust the timeout to a longer one (default: `10`), or remove the
-        timeout (`0`). Either add it as an argument in your command:
+    > ```shell
+    > uv run poe test --spawn-timeout 0
+    > ```
 
-        ```shell
-        uv run poe test --spawn-timeout 0
-        ```
+   > Or modify pytest arguments in VS Code workspace settings:
 
-        Or modify pytest arguments in VS Code workspace settings:
-
-        ```json title=".vscode/settings.json"
-        {
-          ...
-          "python.testing.pytestArgs": [
-            "--spawn-timeout=0"
-          ]
-        }
-        ```
+    > ```json title=".vscode/settings.json"
+    > {
+    >     ...
+    >     "python.testing.pytestArgs": [
+    >     "--spawn-timeout=0"
+    >     ]
+    > }
+    > ```
 
 1. Optionally, use pyclean to remove Python bytecode and build artifacts, e.g.
 
