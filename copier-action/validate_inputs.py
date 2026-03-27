@@ -1,21 +1,15 @@
 """Provides validation for Action inputs."""
 
-import os
-import sys
+import argparse
 
-valid_subcommands = ["check-update"]
 
-if not os.environ["SUBCOMMAND"]:
-    print(
-        "::error title=Copier Action Error::Input 'subcommand' "
-        "is required but was not provided"
+def main() -> None:
+    """Validates Action inputs via argparse."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--subcommand", type=str, required=True, choices=["check-update"]
     )
-    sys.exit(1)
 
-if os.environ["SUBCOMMAND"] not in valid_subcommands:
-    print(
-        "::error title=Copier Action Error::Value "
-        f"'{os.environ['SUBCOMMAND']}' for input 'subcommand' is not one "
-        f"of these valid values: {valid_subcommands}"
-    )
-    sys.exit(1)
+
+if __name__ == "__main__":
+    main()

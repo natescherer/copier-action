@@ -36,7 +36,5 @@ runs:
         pip-install: copier
     - name: Validate Inputs
       run: |
-        python ${{ github.action_path }}/copier-action/validate_inputs.py
+        python ${{ github.action_path }}/copier-action/validate_inputs.py --subcommand ${{ inputs.subcommand }}
       shell: bash
-      env:
-        SUBCOMMAND: ${{ inputs.subcommand }}
