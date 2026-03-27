@@ -30,14 +30,12 @@ outputs:
 
 runs:
   using: composite
-  defaults:
-    run:
-      shell: bash
   steps:
     - uses: actions/setup-python@v6
       with:
         pip-install: copier
     - name: Validate Inputs
-      run: python copier-action/validate_inputs.py
+      run: python ${{ github.action_path }}/copier-action/validate_inputs.py
+      shell: bash
       env:
         SUBCOMMAND: ${{ inputs.subcommand }}
