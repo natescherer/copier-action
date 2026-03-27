@@ -1,9 +1,14 @@
+#:tombi schema.strict = false
+# Needed because https://json.schemastore.org/partial-poe.json does not
+# currently include the 'help' key for poe tasks
+
 [project]
 name = "copier-action"
-dynamic = ["version"]
 description = "A GitHub Action for Copier"
-license = { text = "MIT" }
+readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Nate Scherer", email = "pypi@nate.online" }]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
@@ -15,11 +20,10 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
 ]
-authors = [{ name = "Nate Scherer", email = "pypi@nate.online" }]
-readme = "README.md"
 dependencies = [
   "plumbum>=1.6.9",
 ]
+dynamic = ["version"]
 
 [project.urls]
 "Bug Tracker" = "https://github.com/copier-org/copier-action/issues"
@@ -112,7 +116,7 @@ extend-select = [
   "UP",
   "W505",  # doc-line-too-long
 ]
-extend-ignore = ["B028", "B904", "D105", "D107", "E501"]
+ignore = ["B028", "B904", "D105", "D107", "E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
