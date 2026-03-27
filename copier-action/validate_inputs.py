@@ -8,6 +8,10 @@ class Validator(cli.Application):
 
     subcommand = cli.SwitchAttr(["--subcommand"], str, mandatory=True)
 
+    def main(self):
+        """Dummy function."""
+        pass
+
 
 if __name__ == "__main__":
     Validator.run()
