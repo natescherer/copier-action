@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-input-validation:
     strategy:
       matrix:
         os:
@@ -19,25 +19,19 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v6
-      - name: test-no-subcommand
-        id: test-no-subcommand
+      - name: input-subcommand-missing-test
+        id: input-subcommand-missing-test
         continue-on-error: true
         uses: ./
-      - name: assert-no-subcommand
+      - name: input-subcommand-missing-assert-failure
         run: |
-          if [ "${{ steps.test-no-subcommand.outcome }}" != "failure" ]; then
-            echo "Expected failure, but it passed"
-            exit 1
-          fi
-      - name: test-bad-subcommand
-        id: test-bad-subcommand
+          [ "${{ steps.input-subcommand-missing-test.outcome }}" = "failure" ]
+      - name: input-subcommand-wrong-test
+        id: input-subcommand-wrong-test
         continue-on-error: true
         uses: ./
         with:
           subcommand: bad
-      - name: assert-bad-subcommand
+      - name: input-subcommand-wrong-assert-failure
         run: |
-          if [ "${{ steps.test-bad-subcommand.outcome }}" != "failure" ]; then
-            echo "Expected failure, but it passed"
-            exit 1
-          fi
+          [ "${{ steps.input-subcommand-wrong-test.outcome }}" = "failure" ]
