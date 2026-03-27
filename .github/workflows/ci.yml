@@ -19,6 +19,16 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v6
+      - name: test-no-subcommand
+        id: test-no-subcommand
+        continue-on-error: true
+        uses: ./
+      - name: assert-no-subcommand
+        run: |
+          if [ "${{ steps.test-no-subcommand.outcome }}" != "failure" ]; then
+            echo "Expected failure, but it passed"
+            exit 1
+          fi
       - name: test-bad-subcommand
         id: test-bad-subcommand
         continue-on-error: true

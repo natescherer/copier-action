@@ -40,8 +40,11 @@ runs:
         import sys
 
         valid_subcommands = ["check-update"]
+        if not os.environ["SUBCOMMAND"]:
+          print(f"::error title=Copier Action Error::Input 'subcommand' is required but was not provided")
+          sys.exit(1)
         if os.environ["SUBCOMMAND"] not in valid_subcommands:
-          print(f"::error title=Copier Action Error::Subcommand '{os.environ['SUBCOMMAND']}' is not one of these valid values: {valid_subcommands}!")
+          print(f"::error title=Copier Action Error::Value '{os.environ['SUBCOMMAND']}' for input 'subcommand' is not one of these valid values: {valid_subcommands}")
           sys.exit(1)
       shell: python
       env:
