@@ -1,17 +1,28 @@
 """Provides validation for Action inputs."""
 
-from plumbum import cli
+import os
+import sys
 
+# NOTE: argparse and plumbum were tested for this validation but it was too
+# difficult to capture their errors and convert them into messages useful to the
+# action's end user
 
-class Validator(cli.Application):
-    """Validate action inputs via Plumbum."""
+subcommand = os.environ["COPIER_SUBCOMMAND"]
 
-    subcommand = cli.SwitchAttr(["--subcommand"], str, mandatory=True)
+# Validate 'subcommand' input was provided
+if not subcommand:
+    print(
+        "::error title=Copier Action Error::Input 'subcommand' "
+        "is required but was not provided"
+    )
+    sys.exit(1)
 
-    def main(self):
-        """Dummy function."""
-        pass
-
-
-if __name__ == "__main__":
-    Validator.run()
+# Validate 'subcommand' input is valid
+valid_subcommands = ["check-update"]
+if subcommand not in valid_subcommands:
+    print(
+        "::error title=Copier Action Error::Value "
+        f"'{subcommand}' for input 'subcommand' is not one "
+        f"of these valid values: {valid_subcommands}"
+    )
+    sys.exit(1)
