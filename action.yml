@@ -31,16 +31,18 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: action/setup-python@v6
+    - uses: actions/setup-python@v6
       with:
         pip-install: copier
     - name: Validate Inputs
       run: |
         import os
+        import sys
 
-        if os.environ("SUBCOMMAND") not in ["check-update"]:
-          throw "Bad Subcommand"
-          exit 1
+        valid_subcommands = ["check-update"]
+        if os.environ["SUBCOMMAND"] not in valid_subcommands:
+          print(f"::error title=Copier Action Error::Subcommand '{os.environ['SUBCOMMAND']}'' is not one of these valid values: {valid_subcommands}!")
+          sys.exit(1)
       shell: python
       env:
         SUBCOMMAND: ${{ inputs.subcommand }}

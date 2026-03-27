@@ -14,9 +14,19 @@ jobs:
           - ubuntu-latest
           - windows-latest
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v6
       - id: test-bad-subcommand
+        continue-on-error: true
         uses: ./
         with:
           subcommand: bad
+      - id: assert-bad-subcommand
+        run: |
+          if [ "${{ steps.test-bad-subcommand.outcome }}" != "failure" ]; then
+            echo "Expected failure, but it passed"
+            exit 1
+          fi
