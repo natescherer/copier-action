@@ -114,7 +114,7 @@ Ready to contribute? Here's how to set up the project for local development.
     ```
 
    This process will take some time to load for the 1st time. It will download all
-   development dependencies, including [uv][https://docs.astral.sh/uv/], and it will use
+   development dependencies, including [uv](https://docs.astral.sh/uv/), and it will use
    it to create a virtualenv and install Copier with all its development dependencies
    too.
 
