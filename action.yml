@@ -41,7 +41,7 @@ runs:
 
         valid_subcommands = ["check-update"]
         if os.environ["SUBCOMMAND"] not in valid_subcommands:
-          print(f"::error title=Copier Action Error::Subcommand '{os.environ['SUBCOMMAND']}'' is not one of these valid values: {valid_subcommands}!")
+          print(f"::error title=Copier Action Error::Subcommand '{os.environ['SUBCOMMAND']}' is not one of these valid values: {valid_subcommands}!")
           sys.exit(1)
       shell: python
       env:
