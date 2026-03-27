@@ -7,6 +7,11 @@
   "mounts": [
     "type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/devbox/.ssh,readonly"
   ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
