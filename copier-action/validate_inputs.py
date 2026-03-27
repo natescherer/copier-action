@@ -1,15 +1,13 @@
 """Provides validation for Action inputs."""
 
-import argparse
+from plumbum import cli
 
 
-def main() -> None:
-    """Validates Action inputs via argparse."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--subcommand", type=str, required=True, choices=["check-update"]
-    )
+class Validator(cli.Application):
+    """Validate action inputs via Plumbum."""
+
+    subcommand = cli.SwitchAttr(["--subcommand"], str, mandatory=True)
 
 
 if __name__ == "__main__":
-    main()
+    Validator.run()
