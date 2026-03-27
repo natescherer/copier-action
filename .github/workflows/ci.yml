@@ -8,6 +8,7 @@ on:
 jobs:
   test-input-validation:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-latest
