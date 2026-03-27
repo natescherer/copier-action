@@ -1,0 +1,57 @@
+repos:
+  - repo: local
+    hooks:
+      - id: codespell
+        name: codespell
+        entry: uv run codespell
+        language: system
+        types: [text]
+
+      - id: commitizen
+        name: commitizen check
+        entry: uv run cz check
+        args: [--allow-abort, --commit-msg-file]
+        stages: [commit-msg]
+        language: system
+
+      - id: editorconfig-checker
+        name: editorconfig-checker
+        entry: editorconfig-checker
+        language: system
+        types: [text]
+        exclude: \.md$|\.noeof\.|\.bundle$
+
+      - id: prettier
+        name: prettier
+        entry: prettier --write --list-different --ignore-unknown
+        stages: [pre-commit]
+        language: system
+        types: [text]
+
+      - id: ruff-check
+        name: ruff-check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      - id: ruff-format
+        name: ruff-format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      - id: taplo
+        name: taplo
+        entry: uv run taplo format
+        language: system
+        types: [toml]
+        require_serial: true
+
+      - id: rumdl
+        name: rumdl
+        entry: uv run rumdl check --fix
+        language: system
+        types: [markdown]
+        require_serial: true

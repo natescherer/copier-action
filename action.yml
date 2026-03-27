@@ -1,0 +1,46 @@
+name: Copier Action
+
+description: A GitHub Action for Copier
+
+branding:
+  color: yellow
+  icon: copy
+
+inputs:
+  subcommand:
+    description: The subcommand to use (only 'check-update' is currently supported)
+    required: true
+  answers-file:
+    description: The path to the answers file (if different than default)
+    required: false
+    default: .copier-answers.yml
+  prereleases:
+    description: If set to 'true', will evaluate
+
+outputs:
+  check-update_current_version:
+    description: The current template version used by your repo
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+  check-update_latest_version:
+    description: The latest template version available
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+  check-update_update_available:
+    description: "'true' if an update is available, 'false' if not"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+
+runs:
+  using: composite
+  steps:
+    - uses: action/setup-python@v6
+      with:
+        pip-install: copier
+    - name: Validate Inputs
+      run: |
+        import os
+
+        if os.environ("SUBCOMMAND") not in ["check-update"]:
+          throw "Bad Subcommand"
+          exit 1
+      shell: python
+      env:
+        SUBCOMMAND: ${{ inputs.subcommand }}

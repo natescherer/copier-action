@@ -1,0 +1,149 @@
+[project]
+name = "copier-action"
+dynamic = ["version"]
+description = "A GitHub Action for Copier"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+authors = [{ name = "Nate Scherer", email = "pypi@nate.online" }]
+readme = "README.md"
+dependencies = [
+  "plumbum>=1.6.9",
+]
+
+[project.urls]
+homepage = "https://github.com/copier-org/copier-action"
+repository = "https://github.com/copier-org/copier-action"
+"Bug Tracker" = "https://github.com/copier-org/copier-action/issues"
+
+[project.scripts]
+copier = "copier.__main__:CopierApp.run"
+
+[dependency-groups]
+dev = [
+  "codespell[toml]==2.4.2",
+  "commitizen==4.13.9",
+  "mypy==1.19.1",
+  "poethepoet==0.42.1",
+  "pre-commit==4.5.1",
+  "ruff==0.15.7",
+  "rumdl==0.1.59",
+  "taplo==0.9.3",
+]
+
+[tool.poe.tasks.dev-setup]
+script = "devtasks:dev_setup"
+help = "set up local development environment"
+
+[tool.poe.tasks.lint]
+script = "devtasks:lint"
+help = "check (and auto-fix) style with pre-commit"
+
+[tool.poe.tasks.test]
+cmd = "act -W .github/workflows/ci.yml"
+help = "run tests"
+
+[tool.poe.tasks.types]
+cmd = "mypy ."
+help = "run the type (mypy) checker on the codebase"
+
+[tool.ruff.lint]
+extend-select = [
+  "ARG",
+  "B",
+  "C90",
+  "D",
+  "E",
+  "F",
+  "FA",
+  "I",
+  "PERF",
+  "PGH",
+  "PTH",
+  "UP",
+  "W505", # doc-line-too-long
+]
+extend-ignore = ['B028', "B904", "D105", "D107", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["copier"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+ignore-overlong-task-comments = true
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+  "plumbum.*",
+  "poethepoet.app",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "copier._subproject",
+  "copier._template",
+  "copier._tools",
+  "copier._user_data",
+  "copier._vcs",
+  "copier.subproject",
+  "copier.template",
+  "copier.tools",
+  "copier.user_data",
+  "copier.vcs",
+]
+warn_return_any = false
+
+[tool.commitizen]
+annotated_tag = true
+changelog_incremental = true
+tag_format = "v$version"
+update_changelog_on_bump = true
+version = "0.1.0"
+
+[tool.codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = '.git*,*.svg,*.lock,*.css,pyproject.toml,.mypy_cache,.venv'
+check-hidden = true
+ignore-regex = '\bla vie\b'
+ignore-words-list = 'ans'
+
+[tool.rumdl]
+flavor = "github"
+line_length = 88
+
+[tool.rumdl.MD013]
+reflow = true
+code-blocks = false
+
+[tool.rumdl.MD029]
+style = "one"
+
+[tool.rumdl.MD033]
+allowed-elements = ["br", "code"]
+
+[tool.rumdl.MD060]
+enabled = true
