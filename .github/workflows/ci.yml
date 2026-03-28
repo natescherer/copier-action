@@ -99,4 +99,4 @@ jobs:
     steps:
       - name: write-notice
         run: |
-          echo "::notice title=CI Notice::You're going to see a lot of error annotations below, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeeded, the tests passed."
+          echo "::notice title=CI Notice::You're going to see a lot of error annotations, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeeded, the tests passed."
