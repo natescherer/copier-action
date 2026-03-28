@@ -18,6 +18,7 @@
         "editorconfig.editorconfig",
         "elagil.pre-commit-helper",
         "jetpack-io.devbox",
+        "jimeh.actionlint",
         "ms-python.python",
         "tombi-toml.tombi"
       ],
