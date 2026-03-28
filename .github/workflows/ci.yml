@@ -94,6 +94,7 @@ jobs:
         run: |
           [ "${{ steps.input-prereleases-bad-value-test.outcome }}" = "failure" ]
   write-notice:
+    needs: [test-input-validation]
     runs-on: ubuntu-latest
     steps:
       - name: write-notice
