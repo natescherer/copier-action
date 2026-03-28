@@ -9,12 +9,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  write-notice:
-    runs-on: ubuntu-latest
-    steps:
-      - name: write-notice
-        run: |
-          echo "::notice title=CI Notice::You're going to see a lot of error notices below, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeed, the tests pass."
   test-input-validation:
     strategy:
       fail-fast: false
@@ -99,3 +93,9 @@ jobs:
       - name: input-prereleases-bad-value-assert-failure
         run: |
           [ "${{ steps.input-prereleases-bad-value-test.outcome }}" = "failure" ]
+  write-notice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: write-notice
+        run: |
+          echo "::notice title=CI Notice::You're going to see a lot of error annotations below, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeeded, the tests passed."
