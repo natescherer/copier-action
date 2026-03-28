@@ -54,9 +54,9 @@ jobs:
         with:
           path: badpath
           subcommand: check-update
-      - name: input-answers-file-badpath-assert-failure
+      - name: input-path-badpath-assert-failure
         run: |
-          [ "${{ steps.input-answers-file-badpath-test.outcome }}" = "failure" ]
+          [ "${{ steps.input-path-badpath-test.outcome }}" = "failure" ]
       - name: input-subcommand-empty-test
         id: input-subcommand-empty-test
         continue-on-error: true
