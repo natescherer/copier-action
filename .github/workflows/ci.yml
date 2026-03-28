@@ -37,37 +37,62 @@ jobs:
       - name: build-test-data
         if: steps.cache-test-data.outputs.cache-hit != 'true'
         run: python tests/build_test_data.py
-      - name: input-subcommand-null-test
-        id: input-subcommand-null-test
+      - name: input-path-empty-test
+        id: input-path-empty-test
         continue-on-error: true
         uses: ./
-      - name: input-subcommand-null-assert-failure
+        with:
+          path: ""
+          subcommand: check-update
+      - name: input-path-empty-assert-failure
         run: |
-          [ "${{ steps.input-subcommand-null-test.outcome }}" = "failure" ]
+          [ "${{ steps.input-path-empty-test.outcome }}" = "failure" ]
+      - name: input-path-badpath-test
+        id: input-path-badpath-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: badpath
+          subcommand: check-update
+      - name: input-answers-file-badpath-assert-failure
+        run: |
+          [ "${{ steps.input-answers-file-badpath-test.outcome }}" = "failure" ]
+      - name: input-subcommand-empty-test
+        id: input-subcommand-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+      - name: input-subcommand-empty-assert-failure
+        run: |
+          [ "${{ steps.input-subcommand-empty-test.outcome }}" = "failure" ]
       - name: input-subcommand-bad-value-test
         id: input-subcommand-bad-value-test
         continue-on-error: true
         uses: ./
         with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: badvalue
       - name: input-subcommand-bad-value-assert-failure
         run: |
           [ "${{ steps.input-subcommand-bad-value-test.outcome }}" = "failure" ]
-      - name: input-answers-file-null-test
-        id: input-answers-file-null-test
+      - name: input-answers-file-empty-test
+        id: input-answers-file-empty-test
         continue-on-error: true
         uses: ./
         with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           answers-file: ""
-      - name: input-answers-file-null-assert-failure
+      - name: input-answers-file-empty-assert-failure
         run: |
-          [ "${{ steps.input-answers-file-null-test.outcome }}" = "failure" ]
+          [ "${{ steps.input-answers-file-empty-test.outcome }}" = "failure" ]
       - name: input-answers-file-badpath-test
         id: input-answers-file-badpath-test
         continue-on-error: true
         uses: ./
         with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           answers-file: badpath.yml
       - name: input-answers-file-badpath-assert-failure
@@ -78,6 +103,7 @@ jobs:
         continue-on-error: true
         uses: ./
         with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           prereleases: ""
       - name: input-prereleases-empty-assert-failure
@@ -88,6 +114,7 @@ jobs:
         continue-on-error: true
         uses: ./
         with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           prereleases: badvalue
       - name: input-prereleases-bad-value-assert-failure
