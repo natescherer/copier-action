@@ -1,3 +1,6 @@
+# NOTE: Always use single quotes inside of Actions expressions
+# to maintain netktos/act compatability
+
 name: CI
 
 on:
@@ -20,13 +23,25 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v6
-      - name: input-subcommand-missing-test
-        id: input-subcommand-missing-test
+      - uses: actions/setup-python@v6
+      - name: set-env-vars
+        run: python tests/set_env_vars.py
+      - name: cache-test-data
+        id: cache-test-data
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.COPIER_TEST_BASEPATH }}
+          key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
+      - name: build-test-data
+        if: steps.cache-test-data.outputs.cache-hit != 'true'
+        run: python tests/build_test_data.py
+      - name: input-subcommand-null-test
+        id: input-subcommand-null-test
         continue-on-error: true
         uses: ./
-      - name: input-subcommand-missing-assert-failure
+      - name: input-subcommand-null-assert-failure
         run: |
-          [ "${{ steps.input-subcommand-missing-test.outcome }}" = "failure" ]
+          [ "${{ steps.input-subcommand-null-test.outcome }}" = "failure" ]
       - name: input-subcommand-wrong-test
         id: input-subcommand-wrong-test
         continue-on-error: true
@@ -36,3 +51,33 @@ jobs:
       - name: input-subcommand-wrong-assert-failure
         run: |
           [ "${{ steps.input-subcommand-wrong-test.outcome }}" = "failure" ]
+      - name: input-answers-file-null-test
+        id: input-answers-file-null-test
+        continue-on-error: true
+        uses: ./
+        with:
+          subcommand: check-update
+          answers-file: ""
+      - name: input-answers-file-null-assert-failure
+        run: |
+          [ "${{ steps.input-answers-file-null-test.outcome }}" = "failure" ]
+      - name: input-answers-file-badpath-test
+        id: input-answers-file-badpath-test
+        continue-on-error: true
+        uses: ./
+        with:
+          subcommand: check-update
+          answers-file: badpath.yml
+      - name: input-answers-file-badpath-assert-failure
+        run: |
+          [ "${{ steps.input-answers-file-badpath-test.outcome }}" = "failure" ]
+      - name: input-prereleases-empty-test
+        id: input-prereleases-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          subcommand: check-update
+          prereleases: ""
+      - name: input-prereleases-empty-assert-failure
+        run: |
+          [ "${{ steps.input-prereleases-empty-test.outcome }}" = "failure" ]

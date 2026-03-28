@@ -7,15 +7,22 @@ branding:
   icon: copy
 
 inputs:
+  path:
+    description:
+      The base path to use when running the action (Defaults to the root of your repo)
+    required: false
+    default: ${{ github.workspace }}
   subcommand:
-    description: The subcommand to use (only 'check-update' is currently supported)
+    description: The subcommand to use (Only "check-update" is currently supported)
     required: true
   answers-file:
-    description: The path to the answers file (if different than default)
+    description: The path to the answers file (Defaults to "".copier-answers.yml")
     required: false
     default: .copier-answers.yml
   prereleases:
-    description: If set to 'true', will evaluate
+    description: If set to "true", will use prereleases to compare template VCS tags
+    required: false
+    default: "false"
 
 outputs:
   check-update_current_version:
@@ -40,5 +47,6 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
-        COPIER_SUBCOMMAND: ${{ inputs.subcommand }}
-        COPIER_ANSWERS-FILE: ${{ inputs.answers-file }}
+        INPUT_SUBCOMMAND: ${{ inputs.subcommand }}
+        INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
+        INPUT_PRERELEASES: ${{ inputs.prereleases }}
