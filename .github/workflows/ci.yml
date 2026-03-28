@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
+        with:
+          pip-install: copier
       - name: set-env-vars
         run: python tests/set_env_vars.py
       - name: cache-test-data
