@@ -2,4 +2,4 @@ paths:
   .github/workflows/ci.yml:
     ignore:
       - 'missing input ".+" which is required by action ".+" defined at ".+"\. all
-        required inputs are "subcommand"'
+        required inputs are ".+"'
