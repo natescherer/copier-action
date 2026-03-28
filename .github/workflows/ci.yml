@@ -9,6 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  write-notice:
+    runs-on: ubuntu-latest
+    steps:
+      - name: write-notice
+        run: |
+          echo "::notice title=CI Notice::You're going to see a lot of error notices below, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeed, the tests pass."
   test-input-validation:
     strategy:
       fail-fast: false
@@ -22,9 +28,6 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: write-notice
-        run: |
-          echo "::notice title=CI Notice::You're going to see a lot of error notices above, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeed, the tests pass."
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
