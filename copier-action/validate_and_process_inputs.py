@@ -71,7 +71,7 @@ if not ANSWERS_PATH.exists():
 
 # Validate 'prereleases' input was provided
 if not INPUT_PRERELEASES:
-    print("::error title=Copier Action Error::Input 'answers-file' is empty.")
+    print("::error title=Copier Action Error::Input 'prereleases' is empty.")
     sys.exit(1)
 
 # Validate 'prereleases' input is valid
