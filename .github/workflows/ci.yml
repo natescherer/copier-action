@@ -23,9 +23,9 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with:
-          pip-install: copier
+      - uses: astral-sh/setup-uv@v7
+      - name: uv sync
+        run: uv sync
       - name: set-env-vars
         run: python tests/set_env_vars.py
       - name: cache-test-data
@@ -36,7 +36,7 @@ jobs:
           key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
       - name: build-test-data
         if: steps.cache-test-data.outputs.cache-hit != 'true'
-        run: python tests/build_test_data.py
+        run: uv run tests/build_test_data.py
       - name: input-path-empty-test
         id: input-path-empty-test
         continue-on-error: true
@@ -126,4 +126,4 @@ jobs:
     steps:
       - name: write-notice
         run: |
-          echo "::notice title=CI Notice::You're going to see a lot of error annotations, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeeded, the tests passed."
+          echo "::notice title=CI Notice::You're going to see a lot of error annotations thrown by test-input-validation jobs, that is normal! The integration tests performed in those jobs intentionally cause errors. As long as the jobs succeeded, the tests passed."

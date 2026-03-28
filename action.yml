@@ -39,15 +39,24 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-python@v6
-      with:
-        pip-install: copier
+    - uses: astral-sh/setup-uv@v7
+    - name: uv sync
+      run: uv sync
+      shell: bash
     - name: Validate and Process Inputs
-      run: python copier-action/validate_and_process_inputs.py
+      run: uv run scripts/validate_and_process_inputs.py
       shell: bash
       working-directory: ${{ github.action_path }}
       env:
         INPUT_PATH: ${{ inputs.path }}
         INPUT_SUBCOMMAND: ${{ inputs.subcommand }}
+        INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
+        INPUT_PRERELEASES: ${{ inputs.prereleases }}
+    - name: Run 'copier check-update' and Set Outputs
+      if: inputs.subcommand == 'check-update'
+      run: uv run scripts/run_check_update_and_set_outputs.py
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
         INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
         INPUT_PRERELEASES: ${{ inputs.prereleases }}
