@@ -22,6 +22,9 @@ jobs:
       run:
         shell: bash
     steps:
+      - name: write-notice
+        run: |
+          echo "::notice title=CI Notice::You're going to see a lot of error notices above, that is normal! The integration tests performed here intentionally cause errors. As long as the jobs succeed, the tests pass."
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
@@ -30,7 +33,7 @@ jobs:
         run: python tests/set_env_vars.py
       - name: cache-test-data
         id: cache-test-data
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.COPIER_TEST_BASEPATH }}
           key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
@@ -44,15 +47,15 @@ jobs:
       - name: input-subcommand-null-assert-failure
         run: |
           [ "${{ steps.input-subcommand-null-test.outcome }}" = "failure" ]
-      - name: input-subcommand-wrong-test
-        id: input-subcommand-wrong-test
+      - name: input-subcommand-bad-value-test
+        id: input-subcommand-bad-value-test
         continue-on-error: true
         uses: ./
         with:
-          subcommand: bad
-      - name: input-subcommand-wrong-assert-failure
+          subcommand: badvalue
+      - name: input-subcommand-bad-value-assert-failure
         run: |
-          [ "${{ steps.input-subcommand-wrong-test.outcome }}" = "failure" ]
+          [ "${{ steps.input-subcommand-bad-value-test.outcome }}" = "failure" ]
       - name: input-answers-file-null-test
         id: input-answers-file-null-test
         continue-on-error: true
@@ -83,3 +86,13 @@ jobs:
       - name: input-prereleases-empty-assert-failure
         run: |
           [ "${{ steps.input-prereleases-empty-test.outcome }}" = "failure" ]
+      - name: input-prereleases-bad-value-test
+        id: input-prereleases-bad-value-test
+        continue-on-error: true
+        uses: ./
+        with:
+          subcommand: check-update
+          prereleases: badvalue
+      - name: input-prereleases-bad-value-assert-failure
+        run: |
+          [ "${{ steps.input-prereleases-bad-value-test.outcome }}" = "failure" ]
