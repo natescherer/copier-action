@@ -39,8 +39,9 @@ def main():
     with Path(os.environ["GITHUB_OUTPUT"]).open("a") as f:
         f.write(f"current-version={update_data['current_version']}\n")
         f.write(f"latest-version={update_data['latest_version']}\n")
+        print(f"HEYLOOKATME: {update_data['update_available']}")
         f.write(
-            f"update-available={'true' if update_data['latest_version'] else 'false'}\n"
+            f"update-available={'true' if update_data['update_available'] else 'false'}\n"
         )
 
 

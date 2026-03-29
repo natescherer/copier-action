@@ -167,3 +167,43 @@ jobs:
           [ "${{ steps.update-available-test.outputs.check-update_current_version }}" = "1.0.0" ]
           [ "${{ steps.update-available-test.outputs.check-update_latest_version }}" = "2.0.0" ]
           [ "${{ steps.update-available-test.outputs.check-update_update_available }}" = "true" ]
+      - run: ls -R
+        working-directory: ${{ env.COPIER_TEST_DST_100_ANSWERS_MOVED }}
+      - name: answers-moved-test
+        id: answers-moved-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100_ANSWERS_MOVED }}
+          subcommand: check-update
+          answers-file: .my-answers.yml
+      - name: answers-moved-assertions
+        run: |
+          [ "${{ steps.answers-moved-test.outcome }}" = "success" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_current_version }}" = "1.0.0" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_update_available }}" = "true" ]
+      - name: no-update-test
+        id: no-update-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_200 }}
+          subcommand: check-update
+      - name: no-update-assertions
+        run: |
+          [ "${{ steps.no-update-test.outcome }}" = "success" ]
+          [ "${{ steps.no-update-test.outputs.check-update_current_version }}" = "2.0.0" ]
+          [ "${{ steps.no-update-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.no-update-test.outputs.check-update_update_available }}" = "false" ]
+      - name: prerelease-update-test
+        id: prerelease-update-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_200 }}
+          subcommand: check-update
+          prereleases: true
+      - name: prerelease-update-assertions
+        run: |
+          [ "${{ steps.prerelease-update-test.outcome }}" = "success" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_current_version }}" = "2.0.0" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_latest_version }}" = "3.0.0a0" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_update_available }}" = "true" ]

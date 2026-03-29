@@ -86,7 +86,7 @@ def main():
         "--overwrite",
         "--vcs-ref=v1.0.0",
         "-a",
-        ".config/copier-answers.yml",
+        ".my-answers.yml",
     )
     copier(
         "copy",
