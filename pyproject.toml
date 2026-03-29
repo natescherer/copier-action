@@ -118,7 +118,7 @@ ignore-overlong-task-comments = true
 keep-runtime-typing = true
 
 [tool.rumdl]
-flavor = "github"
+flavor = "gfm"
 line_length = 88
 
 [tool.rumdl.MD013]
@@ -133,3 +133,6 @@ allowed-elements = ["br", "code"]
 
 [tool.rumdl.MD060]
 enabled = true
+
+[tool.rumdl.per-file-ignores]
+"README.md" = ["MD033", "MD041"]
