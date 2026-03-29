@@ -9,15 +9,15 @@ branding:
 inputs:
   path:
     description:
-      The base path to use when running the action (Defaults to the root of your repo,
-      and relative paths are assumed to be based on the root of your repo)
+      The base path to use when running the action (Relative paths are assumed to be
+      based on the root of your repo)
     required: false
     default: ${{ github.workspace }}
   subcommand:
     description: The subcommand to use (Only "check-update" is currently supported)
     required: true
   answers-file:
-    description: The path to the answers file (Defaults to ".copier-answers.yml")
+    description: The path to the answers file
     required: false
     default: .copier-answers.yml
   prereleases:

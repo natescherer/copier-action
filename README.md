@@ -1,108 +1,108 @@
-<!-- header:start -->
+# Copier Action
 
-# ![Icon](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY29weSIgY29sb3I9InllbGxvdyI+PHJlY3QgeD0iOSIgeT0iOSIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiByeD0iMiIgcnk9IjIiPjwvcmVjdD48cGF0aCBkPSJNNSAxNUg0YTIgMiAwIDAgMS0yLTJWNGEyIDIgMCAwIDEgMi0yaDlhMiAyIDAgMCAxIDIgMnYxIj48L3BhdGg+PC9zdmc+) GitHub Action: Copier Action
-
-<div align="center">
-  <img src="https://opengraph.githubassets.com/4236dadf667072ba968e65be2818fa5ea6b7c601f079a713200972d86fca1e87/natescherer/copier-action" width="60px" align="center" alt="Copier Action" />
-</div>
+> A GitHub Composite Action for [Copier](https://copier.readthedocs.io/)
 
 ---
 
-<!-- header:end -->
-<!-- badges:start -->
-
-[![Marketplace](https://img.shields.io/badge/Marketplace-copier--action-blue?logo=github-actions)](https://github.com/marketplace/actions/copier-action)
-[![Release](https://img.shields.io/github/v/release/natescherer/copier-action)](https://github.com/natescherer/copier-action/releases)
-[![License](https://img.shields.io/github/license/natescherer/copier-action)](http://choosealicense.com/licenses/mit/)
-[![Stars](https://img.shields.io/github/stars/natescherer/copier-action?style=social)](https://img.shields.io/github/stars/natescherer/copier-action?style=social)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/natescherer/copier-action/blob/main/CONTRIBUTING.md)
-
-<!-- badges:end -->
-<!-- overview:start -->
-
 ## Overview
 
-A GitHub Action for Copier
+**Copier Action** wraps [Copier](https://copier.readthedocs.io/) and its dependencies,
+making it easy to automate template management tasks directly in your CI/CD workflows.
 
-<!-- overview:end -->
-<!-- usage:start -->
+Currently supports the `check-update` subcommand to detect when a newer version of your
+template is available.
+
+This action is tested and supported on `macOS-latest`, `ubuntu-latest`, and
+`windows-latest` GitHub-hosted runners, and should work on any self-hosted runners that
+can install [uv](https://docs.astral.sh/uv/).
+
+---
 
 ## Usage
 
 ```yaml
-- uses: natescherer/copier-action@adef85c25402ef1c12db7b8c73dc1d491ae4349d # main
+- uses: natescherer/copier-action@v0
+  id: copier
   with:
-    # The base path to use when running the action (Defaults to the root of your repo, and relative paths are assumed to be based on the root of your repo)
-    # Default: `${{ github.workspace }}`
-    path: ${{ github.workspace }}
-
-    # The subcommand to use (Only "check-update" is currently supported)
-    # This input is required.
-    subcommand: ""
-
-    # The path to the answers file (Defaults to ".copier-answers.yml")
-    # Default: `.copier-answers.yml`
-    answers-file: .copier-answers.yml
-
-    # If set to "true", will use prereleases to compare template VCS tags
-    # Default: `false`
-    prereleases: "false"
+    subcommand: check-update
 ```
-
-<!-- usage:end -->
-<!-- inputs:start -->
-
-## Inputs
-
-| **Input**          | **Description**                                                                                                                                       | **Required** | **Default**               |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------- |
-| **`path`**         | The base path to use when running the action (Defaults to the root of your repo, and relative paths are assumed to be based on the root of your repo) | **false**    | `${{ github.workspace }}` |
-| **`subcommand`**   | The subcommand to use (Only "check-update" is currently supported)                                                                                    | **true**     | -                         |
-| **`answers-file`** | The path to the answers file (Defaults to ".copier-answers.yml")                                                                                      | **false**    | `.copier-answers.yml`     |
-| **`prereleases`**  | If set to "true", will use prereleases to compare template VCS tags                                                                                   | **false**    | `false`                   |
-
-<!-- inputs:end -->
-<!-- secrets:start -->
-<!-- secrets:end -->
-<!-- outputs:start -->
-
-## Outputs
-
-| **Output**                          | **Description**                                  |
-| ----------------------------------- | ------------------------------------------------ |
-| **`check-update_current_version`**  | The current template version used by your repo   |
-| **`check-update_latest_version`**   | The latest template version available            |
-| **`check-update_update_available`** | 'true' if an update is available, 'false' if not |
-
-<!-- outputs:end -->
-<!-- examples:start -->
-<!-- examples:end -->
-<!-- contributing:start -->
-
-## Contributing
-
-Contributions are welcome! Please see the [contributing guidelines](https://github.com/natescherer/copier-action/blob/main/CONTRIBUTING.md) for more details.
-
-<!-- contributing:end -->
-<!-- security:start -->
-<!-- security:end -->
-<!-- license:start -->
-
-## License
-
-This project is licensed under the MIT License.
-
-SPDX-License-Identifier: MIT
-
-Copyright © 2026 natescherer
-
-For more details, see the [license](http://choosealicense.com/licenses/mit/).
-
-<!-- license:end -->
-<!-- generated:start -->
 
 ---
 
-This documentation was automatically generated by [CI Dokumentor](https://github.com/hoverkraft-tech/ci-dokumentor).
+## Inputs
 
-<!-- generated:end -->
+| Input | Description | Required | Default |
+| --- | --- | --- | --- |
+| `subcommand` | The Copier subcommand to run. Currently only `check-update` is supported. | **Yes** | — |
+| `path` | Base path for running the action. Relative paths are resolved from the root of your repo. | No | Your repo's root via `${{ github.workspace }}` |
+| `answers-file` | Path to the Copier answers file. | No | `.copier-answers.yml` |
+| `prereleases` | Set to `true` to include pre-release template VCS tags when checking for updates. | No | `false` |
+
+---
+
+## Outputs
+
+All outputs are namespaced by the subcommand that produced them.
+
+### `check-update` outputs
+
+| Output | Description |
+| --- | --- |
+| `check-update_current_version` | The template version currently used by your repo. |
+| `check-update_latest_version` | The latest template version available upstream. |
+| `check-update_update_available` | `true` if an update is available, `false` otherwise. |
+
+---
+
+## Examples
+
+### Alerting when a repo's template has been updated
+
+By design, this action only executes copier, if you are checking for updates, you will
+need to *do* something with the fact that an update is available. An example workflow is
+provided below that uses [apprise](https://github.com/caronc/apprise), a Python library
+that has the ability to send notification messages to many different applications and
+services.
+
+```yaml
+name: Weekly Copier Template Update Check
+
+on:
+  schedule:
+    - cron: "0 8 * * 0" # Runs every Sunday at 08:00 UTC
+  workflow_dispatch: # Allows manual runs
+
+jobs:
+  copier-check-update:
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensures tags are checked out
+      - name: Check for Copier Template Updates
+        id: copier
+        uses: natescherer/copier-action@v0
+        with:
+          subcommand: check-update
+      - name: Notify if Update is Available
+        if: steps.copier.outputs.update_available == 'true'
+        uses: cstuder/apprise-ga@v3.1.0
+        with:
+          title: ${{ github.repository }} Template Update Available
+          message: >
+            Repository ${{ github.repository }} has a new template update available. Current version is ${{ steps.copier.outputs.current_version }}, latest version is ${{ steps.copier.outputs.latest_version }}.
+        env:
+          APPRISE_URL: ${{ secrets.APPRISE_URL }}
+```
+
+---
+
+## Contributing
+
+Contributions and bug reports are welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+---
+
+## License
+
+See [LICENSE](./LICENSE) for details.
