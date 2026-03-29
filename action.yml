@@ -1,0 +1,63 @@
+name: Copier Action
+
+description: A GitHub Action for Copier
+
+branding:
+  color: yellow
+  icon: copy
+
+inputs:
+  path:
+    description:
+      The base path to use when running the action (Defaults to the root of your repo,
+      and relative paths are assumed to be based on the root of your repo)
+    required: false
+    default: ${{ github.workspace }}
+  subcommand:
+    description: The subcommand to use (Only "check-update" is currently supported)
+    required: true
+  answers-file:
+    description: The path to the answers file (Defaults to ".copier-answers.yml")
+    required: false
+    default: .copier-answers.yml
+  prereleases:
+    description: If set to "true", will use prereleases to compare template VCS tags
+    required: false
+    default: "false"
+
+outputs:
+  check-update_current_version:
+    description: The current template version used by your repo
+    value: ${{ steps.check-update-and-set-outputs.outputs.current-version }}
+  check-update_latest_version:
+    description: The latest template version available
+    value: ${{ steps.check-update-and-set-outputs.outputs.latest-version }}
+  check-update_update_available:
+    description: "'true' if an update is available, 'false' if not"
+    value: ${{ steps.check-update-and-set-outputs.outputs.update-available }}
+
+runs:
+  using: composite
+  steps:
+    - uses: astral-sh/setup-uv@v7
+    - name: uv sync
+      run: uv sync
+      shell: bash
+    - name: Validate and Process Inputs
+      run: uv run scripts/validate_and_process_inputs.py
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_SUBCOMMAND: ${{ inputs.subcommand }}
+        INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
+        INPUT_PRERELEASES: ${{ inputs.prereleases }}
+    - name: Run 'copier check-update' and Set Outputs
+      id: check-update-and-set-outputs
+      if: inputs.subcommand == 'check-update'
+      run: uv run scripts/run_check_update_and_set_outputs.py
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
+        INPUT_PRERELEASES: ${{ inputs.prereleases }}

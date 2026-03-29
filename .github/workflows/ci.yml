@@ -1,0 +1,224 @@
+# NOTE: Always use single quotes inside of Actions expressions
+# to maintain netktos/act compatability
+
+name: CI
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+env:
+  # renovate: datasource=github-tags depName=devbox packageName=jetify-com/devbox
+  DEVBOX_VERSION: "0.17.0"
+
+jobs:
+  test-input-validation:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: uv sync
+        run: uv sync
+      - name: set-env-vars
+        run: python tests/set_env_vars.py
+      - name: cache-test-data
+        id: cache-test-data
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.COPIER_TEST_BASEPATH }}
+          key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
+      - name: build-test-data
+        if: steps.cache-test-data.outputs.cache-hit != 'true'
+        run: uv run tests/build_test_data.py
+      - name: input-path-empty-test
+        id: input-path-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ""
+          subcommand: check-update
+      - name: input-path-empty-assertions
+        run: |
+          [ "${{ steps.input-path-empty-test.outcome }}" = "failure" ]
+      - name: input-path-badpath-test
+        id: input-path-badpath-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: badpath
+          subcommand: check-update
+      - name: input-path-badpath-assertions
+        run: |
+          [ "${{ steps.input-path-badpath-test.outcome }}" = "failure" ]
+      - name: input-subcommand-empty-test
+        id: input-subcommand-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+      - name: input-subcommand-empty-assertions
+        run: |
+          [ "${{ steps.input-subcommand-empty-test.outcome }}" = "failure" ]
+      - name: input-subcommand-bad-value-test
+        id: input-subcommand-bad-value-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: badvalue
+      - name: input-subcommand-bad-value-assertions
+        run: |
+          [ "${{ steps.input-subcommand-bad-value-test.outcome }}" = "failure" ]
+      - name: input-answers-file-empty-test
+        id: input-answers-file-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+          answers-file: ""
+      - name: input-answers-file-empty-assertions
+        run: |
+          [ "${{ steps.input-answers-file-empty-test.outcome }}" = "failure" ]
+      - name: input-answers-file-badpath-test
+        id: input-answers-file-badpath-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+          answers-file: badpath.yml
+      - name: input-answers-file-badpath-assertions
+        run: |
+          [ "${{ steps.input-answers-file-badpath-test.outcome }}" = "failure" ]
+      - name: input-prereleases-empty-test
+        id: input-prereleases-empty-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+          prereleases: ""
+      - name: input-prereleases-empty-assertions
+        run: |
+          [ "${{ steps.input-prereleases-empty-test.outcome }}" = "failure" ]
+      - name: input-prereleases-bad-value-test
+        id: input-prereleases-bad-value-test
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+          prereleases: badvalue
+      - name: input-prereleases-bad-value-assertions
+        run: |
+          [ "${{ steps.input-prereleases-bad-value-test.outcome }}" = "failure" ]
+  write-notice:
+    needs: [test-input-validation]
+    runs-on: ubuntu-latest
+    steps:
+      - name: write-notice
+        run: |
+          echo "::notice title=CI Notice::You're going to see a lot of error annotations thrown by test-input-validation jobs, that is normal! The integration tests performed in those jobs intentionally cause errors. As long as the jobs succeeded, the tests passed."
+  test-update-scenarios:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: uv sync
+        run: uv sync
+      - name: set-env-vars
+        run: python tests/set_env_vars.py
+      - name: cache-test-data
+        id: cache-test-data
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.COPIER_TEST_BASEPATH }}
+          key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
+      - name: build-test-data
+        if: steps.cache-test-data.outputs.cache-hit != 'true'
+        run: uv run tests/build_test_data.py
+      - name: update-available-test
+        id: update-available-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+      - name: update-available-assertions
+        run: |
+          [ "${{ steps.update-available-test.outcome }}" = "success" ]
+          [ "${{ steps.update-available-test.outputs.check-update_current_version }}" = "1.0.0" ]
+          [ "${{ steps.update-available-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.update-available-test.outputs.check-update_update_available }}" = "true" ]
+      - name: answers-moved-test
+        id: answers-moved-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100_ANSWERS_MOVED }}
+          subcommand: check-update
+          answers-file: .my-answers.yml
+      - name: answers-moved-assertions
+        run: |
+          [ "${{ steps.answers-moved-test.outcome }}" = "success" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_current_version }}" = "1.0.0" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.answers-moved-test.outputs.check-update_update_available }}" = "true" ]
+      - name: no-update-test
+        id: no-update-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_200 }}
+          subcommand: check-update
+      - name: no-update-assertions
+        run: |
+          [ "${{ steps.no-update-test.outcome }}" = "success" ]
+          [ "${{ steps.no-update-test.outputs.check-update_current_version }}" = "2.0.0" ]
+          [ "${{ steps.no-update-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.no-update-test.outputs.check-update_update_available }}" = "false" ]
+      - name: prerelease-update-test
+        id: prerelease-update-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_200 }}
+          subcommand: check-update
+          prereleases: true
+      - name: prerelease-update-assertions
+        run: |
+          [ "${{ steps.prerelease-update-test.outcome }}" = "success" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_current_version }}" = "2.0.0" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_latest_version }}" = "3.0.0a0" ]
+          [ "${{ steps.prerelease-update-test.outputs.check-update_update_available }}" = "true" ]
+  pre-commit-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        if: ${{ !env.ACT }}
+      - name: install-devbox
+        if: ${{ !env.ACT }}
+        uses: jetify-com/devbox-install-action@v0.15.0
+        with:
+          devbox-version: ${{ env.DEVBOX_VERSION }}
+          enable-cache: true
+      - run: devbox run -- uv run pre-commit run --all-files --show-diff-on-failure
+        if: ${{ !env.ACT }}

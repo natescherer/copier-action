@@ -1,0 +1,15 @@
+github:
+  prebuilds:
+    addBadge: true
+    addCheck: prevent-merge-on-error
+    master: true
+    pullRequests: true
+
+vscode:
+  extensions:
+    - editorconfig.editorconfig
+    - esbenp.prettier-vscode
+    - ms-python.python
+
+tasks:
+  - init: direnv allow
