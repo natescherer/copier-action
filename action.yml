@@ -28,13 +28,13 @@ inputs:
 outputs:
   check-update_current_version:
     description: The current template version used by your repo
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+    value: ${{ steps.check-update-and-set-outputs.outputs.current-version }}
   check-update_latest_version:
     description: The latest template version available
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+    value: ${{ steps.check-update-and-set-outputs.outputs.latest-version }}
   check-update_update_available:
     description: "'true' if an update is available, 'false' if not"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+    value: ${{ steps.check-update-and-set-outputs.outputs.update-available }}
 
 runs:
   using: composite
@@ -53,6 +53,7 @@ runs:
         INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
         INPUT_PRERELEASES: ${{ inputs.prereleases }}
     - name: Run 'copier check-update' and Set Outputs
+      id: check-update-and-set-outputs
       if: inputs.subcommand == 'check-update'
       run: uv run scripts/run_check_update_and_set_outputs.py
       shell: bash

@@ -44,7 +44,7 @@ jobs:
         with:
           path: ""
           subcommand: check-update
-      - name: input-path-empty-assert-failure
+      - name: input-path-empty-assertions
         run: |
           [ "${{ steps.input-path-empty-test.outcome }}" = "failure" ]
       - name: input-path-badpath-test
@@ -54,7 +54,7 @@ jobs:
         with:
           path: badpath
           subcommand: check-update
-      - name: input-path-badpath-assert-failure
+      - name: input-path-badpath-assertions
         run: |
           [ "${{ steps.input-path-badpath-test.outcome }}" = "failure" ]
       - name: input-subcommand-empty-test
@@ -63,7 +63,7 @@ jobs:
         uses: ./
         with:
           path: ${{ env.COPIER_TEST_DST_100 }}
-      - name: input-subcommand-empty-assert-failure
+      - name: input-subcommand-empty-assertions
         run: |
           [ "${{ steps.input-subcommand-empty-test.outcome }}" = "failure" ]
       - name: input-subcommand-bad-value-test
@@ -73,7 +73,7 @@ jobs:
         with:
           path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: badvalue
-      - name: input-subcommand-bad-value-assert-failure
+      - name: input-subcommand-bad-value-assertions
         run: |
           [ "${{ steps.input-subcommand-bad-value-test.outcome }}" = "failure" ]
       - name: input-answers-file-empty-test
@@ -84,7 +84,7 @@ jobs:
           path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           answers-file: ""
-      - name: input-answers-file-empty-assert-failure
+      - name: input-answers-file-empty-assertions
         run: |
           [ "${{ steps.input-answers-file-empty-test.outcome }}" = "failure" ]
       - name: input-answers-file-badpath-test
@@ -95,7 +95,7 @@ jobs:
           path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           answers-file: badpath.yml
-      - name: input-answers-file-badpath-assert-failure
+      - name: input-answers-file-badpath-assertions
         run: |
           [ "${{ steps.input-answers-file-badpath-test.outcome }}" = "failure" ]
       - name: input-prereleases-empty-test
@@ -106,7 +106,7 @@ jobs:
           path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           prereleases: ""
-      - name: input-prereleases-empty-assert-failure
+      - name: input-prereleases-empty-assertions
         run: |
           [ "${{ steps.input-prereleases-empty-test.outcome }}" = "failure" ]
       - name: input-prereleases-bad-value-test
@@ -117,7 +117,7 @@ jobs:
           path: ${{ env.COPIER_TEST_DST_100 }}
           subcommand: check-update
           prereleases: badvalue
-      - name: input-prereleases-bad-value-assert-failure
+      - name: input-prereleases-bad-value-assertions
         run: |
           [ "${{ steps.input-prereleases-bad-value-test.outcome }}" = "failure" ]
   write-notice:
@@ -127,3 +127,43 @@ jobs:
       - name: write-notice
         run: |
           echo "::notice title=CI Notice::You're going to see a lot of error annotations thrown by test-input-validation jobs, that is normal! The integration tests performed in those jobs intentionally cause errors. As long as the jobs succeeded, the tests passed."
+  test-update-scenarios:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: uv sync
+        run: uv sync
+      - name: set-env-vars
+        run: python tests/set_env_vars.py
+      - name: cache-test-data
+        id: cache-test-data
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.COPIER_TEST_BASEPATH }}
+          key: test-data-${{ runner.os }}-${{ hashFiles('tests/build_test_data.py') }}
+      - name: build-test-data
+        if: steps.cache-test-data.outputs.cache-hit != 'true'
+        run: uv run tests/build_test_data.py
+      - name: update-available-test
+        id: update-available-test
+        uses: ./
+        with:
+          path: ${{ env.COPIER_TEST_DST_100 }}
+          subcommand: check-update
+      - name: update-available-assertions
+        run: |
+          [ "${{ steps.update-available-test.outcome }}" = "success" ]
+          [ "${{ steps.update-available-test.outputs.check-update_current_version }}" = "1.0.0" ]
+          [ "${{ steps.update-available-test.outputs.check-update_latest_version }}" = "2.0.0" ]
+          [ "${{ steps.update-available-test.outputs.check-update_update_available }}" = "true" ]
