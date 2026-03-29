@@ -76,7 +76,7 @@ script = "devtasks:lint"
 help = "check (and auto-fix) style with pre-commit"
 
 [tool.poe.tasks.test]
-cmd = "act -W .github/workflows/ci.yml"
+cmd = "act -W .github/workflows/ci.yml --matrix os:ubuntu-latest --platform ubuntu-latest=catthehacker/ubuntu:act-latest --concurrent-jobs 1 --quiet"
 help = "run tests"
 
 [tool.poe.tasks.types]

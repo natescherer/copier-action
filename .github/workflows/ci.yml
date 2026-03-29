@@ -8,6 +8,10 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  # renovate: datasource=github-tags depName=devbox packageName=jetify-com/devbox
+  DEVBOX_VERSION: "0.17.0"
+
 jobs:
   test-input-validation:
     strategy:
@@ -167,8 +171,6 @@ jobs:
           [ "${{ steps.update-available-test.outputs.check-update_current_version }}" = "1.0.0" ]
           [ "${{ steps.update-available-test.outputs.check-update_latest_version }}" = "2.0.0" ]
           [ "${{ steps.update-available-test.outputs.check-update_update_available }}" = "true" ]
-      - run: ls -R
-        working-directory: ${{ env.COPIER_TEST_DST_100_ANSWERS_MOVED }}
       - name: answers-moved-test
         id: answers-moved-test
         uses: ./
@@ -207,3 +209,16 @@ jobs:
           [ "${{ steps.prerelease-update-test.outputs.check-update_current_version }}" = "2.0.0" ]
           [ "${{ steps.prerelease-update-test.outputs.check-update_latest_version }}" = "3.0.0a0" ]
           [ "${{ steps.prerelease-update-test.outputs.check-update_update_available }}" = "true" ]
+  pre-commit-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        if: ${{ !env.ACT }}
+      - name: install-devbox
+        if: ${{ !env.ACT }}
+        uses: jetify-com/devbox-install-action@v0.15.0
+        with:
+          devbox-version: ${{ env.DEVBOX_VERSION }}
+          enable-cache: true
+      - run: devbox run -- uv run pre-commit run --all-files --show-diff-on-failure
+        if: ${{ !env.ACT }}

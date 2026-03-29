@@ -133,6 +133,12 @@ Ready to contribute? Here's how to set up the project for local development.
     uv run poe lint
     ```
 
+   For `uv run poe test`, what you are looking for is that each job concludes with
+   `🏁  Job succeeded`. There are many tests that intentionally fail that
+   [act](https://github.com/nektos/act) prints as `❌  Failure`, but are not actual
+   failures of the overall test suite. Failures of steps that are not supposed to fail
+   will cause the overall job to fail as well.
+
    > [!NOTE] > If you get fails due to >
    `pexpect.exceptions.TIMEOUT: <pexpect.popen_spawn.PopenSpawn object at 0x............>`,
    > you can adjust the timeout to a longer one (default: `10`), or remove the > timeout
