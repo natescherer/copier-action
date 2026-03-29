@@ -19,11 +19,11 @@ jobs:
       - uses: bitflight-devops/github-action-readme-generator@v1
         with:
           title_prefix: ""
-      - name: Commit updated README
-        uses: stefanzweifel/git-auto-commit-action@v5
+          pretty: false
+      - name: Commit updated docs
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "docs: auto-generate README from action.yml [skip ci]"
-          file_pattern: "README.md"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           commit_author:
