@@ -1,22 +1,24 @@
-<div align="center" width="100%">
-<!-- start branding -->
-<!-- end branding -->
-<!-- start title -->
-<!-- end title -->
-<!-- start badges -->
-<!-- end badges -->
----
-
-</div>
-<!-- start description -->
-<!-- end description -->
-<!-- start contents -->
-<!-- end contents -->
-<!-- start usage -->
-<!-- end usage -->
-<!-- start inputs -->
-<!-- end inputs -->
-<!-- start outputs -->
-<!-- end outputs -->
-<!-- start [.github/ghadocs/examples/] -->
-<!-- end [.github/ghadocs/examples/] -->
+<!-- header:start -->
+<!-- header:end -->
+<!-- badges:start -->
+<!-- badges:end -->
+<!-- overview:start -->
+<!-- overview:end -->
+<!-- usage:start -->
+<!-- usage:end -->
+<!-- inputs:start -->
+<!-- inputs:end -->
+<!-- secrets:start -->
+<!-- secrets:end -->
+<!-- outputs:start -->
+<!-- outputs:end -->
+<!-- examples:start -->
+<!-- examples:end -->
+<!-- contributing:start -->
+<!-- contributing:end -->
+<!-- security:start -->
+<!-- security:end -->
+<!-- license:start -->
+<!-- license:end -->
+<!-- generated:start -->
+<!-- generated:end -->
