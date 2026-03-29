@@ -12,7 +12,7 @@ making it easy to automate template management tasks directly in your CI/CD work
 Currently supports the `check-update` subcommand to detect when a newer version of your
 template is available.
 
-This action is tested and supported on `macOS-latest`, `ubuntu-latest`, and
+This action is tested and supported on `macos-latest`, `ubuntu-latest`, and
 `windows-latest` GitHub-hosted runners, and should work on any self-hosted runners that
 can install [uv](https://docs.astral.sh/uv/).
 
@@ -58,8 +58,10 @@ All outputs are namespaced by the subcommand that produced them.
 
 ### Alerting when a repo's template has been updated
 
-By design, this action only executes copier, if you are checking for updates, you will
-need to *do* something with the fact that an update is available. An example workflow is
+By design, this action only executes copier. If you are checking for updates, you will
+need to *do* something with the fact that an update is available.
+
+An example workflow is
 provided below that uses [apprise](https://github.com/caronc/apprise), a Python library
 that has the ability to send notification messages to many different applications and
 services.
