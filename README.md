@@ -1,6 +1,6 @@
 # Copier Action
 
-> A GitHub Composite Action for [Copier](https://copier.readthedocs.io/)
+> A GitHub Action for [Copier](https://copier.readthedocs.io/)
 
 ---
 
