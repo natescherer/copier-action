@@ -31,7 +31,7 @@ jobs:
           NEW_VERSION=$(uv run cz version --project)
           MAJOR=$(echo "$NEW_VERSION" | cut -d. -f1)
           MINOR=$(echo "$NEW_VERSION" | cut -d. -f2)
-          echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "new-version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
           echo "major=${MAJOR}" >> "$GITHUB_OUTPUT"
           echo "minor=${MINOR}" >> "$GITHUB_OUTPUT"
       - name: Update vMAJOR/vMAJOR.MINOR tags and push
