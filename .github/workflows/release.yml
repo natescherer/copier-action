@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+      - name: uv sync
+        run: uv sync
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Bump version and update changelog
+        id: cz_bump
+        run: |
+          cz bump --changelog --yes
+
+          NEW_VERSION=$(cz version --project)
+          MAJOR=$(echo "$NEW_VERSION" | cut -d. -f1)
+          MINOR=$(echo "$NEW_VERSION" | cut -d. -f2)
+          echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "major=${MAJOR}" >> "$GITHUB_OUTPUT"
+          echo "minor=${MINOR}" >> "$GITHUB_OUTPUT"
+      - name: Update Floating vMAJOR and vMAJOR.MINOR Tags and Push All Commit and Tags
+        env:
+          MAJOR: ${{ steps.cz_bump.outputs.major }}
+          MINOR: ${{ steps.cz_bump.outputs.minor }}
+        run: |
+          git tag --force "v${MAJOR}" HEAD
+          git tag --force "v${MAJOR}.${MINOR}" HEAD
+
+          git push origin HEAD \
+            "refs/tags/v${NEW_VERSION}" \
+            --force "refs/tags/v${MAJOR}.${MINOR}" \
+            --force "refs/tags/v${MAJOR}"
+      - name: Extract changelog for this release
+        id: changelog
+        run: |
+          NOTES=$(cz changelog --dry-run)
+
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$NOTES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.cz_bump.outputs.new_version }}
+          body: ${{ steps.changelog.outputs.notes }}

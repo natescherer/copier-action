@@ -1,5 +1,8 @@
 paths:
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - "shellcheck reported issue in this script: SC2129:.+" # This rule blocks the clearest way of setting GitHub outputs and env vars
   .github/workflows/ci.yml:
     ignore:
       - 'missing input ".+" which is required by action ".+" defined at ".+"\. all
-        required inputs are ".+"'
+        required inputs are ".+"' # Used by test cases
