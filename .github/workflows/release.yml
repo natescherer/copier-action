@@ -34,9 +34,6 @@ jobs:
           echo "major=${MAJOR}" >> "$GITHUB_OUTPUT"
           echo "minor=${MINOR}" >> "$GITHUB_OUTPUT"
       - name: Update Floating vMAJOR and vMAJOR.MINOR Tags and Push All Commit and Tags
-        env:
-          MAJOR: ${{ steps.cz_bump.outputs.major }}
-          MINOR: ${{ steps.cz_bump.outputs.minor }}
         run: |
           git tag --force "v${MAJOR}" HEAD
           git tag --force "v${MAJOR}.${MINOR}" HEAD
@@ -45,6 +42,10 @@ jobs:
             "refs/tags/v${NEW_VERSION}" \
             --force "refs/tags/v${MAJOR}.${MINOR}" \
             --force "refs/tags/v${MAJOR}"
+        env:
+          MAJOR: ${{ steps.cz_bump.outputs.major }}
+          MINOR: ${{ steps.cz_bump.outputs.minor }}
+          NEW_VERSION: ${{ steps.cz_bump.outputs.new-version }}
       - name: Extract changelog for this release
         id: changelog
         run: |
