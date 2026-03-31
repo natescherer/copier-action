@@ -46,6 +46,7 @@ runs:
     - name: Run uv sync
       run: uv sync
       shell: bash
+      working-directory: ${{ github.action_path }}
     - name: Validate and process inputs
       run: uv run scripts/validate_and_process_inputs.py
       shell: bash
