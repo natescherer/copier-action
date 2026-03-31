@@ -8,15 +8,16 @@ permissions:
 
 jobs:
   release:
-    name: Create Release
+    name: Create release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v7
-      - name: uv sync
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+      - name: Run uv sync
         run: uv sync
       - name: Configure git
         run: |
@@ -33,7 +34,7 @@ jobs:
           echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
           echo "major=${MAJOR}" >> "$GITHUB_OUTPUT"
           echo "minor=${MINOR}" >> "$GITHUB_OUTPUT"
-      - name: Update Floating vMAJOR and vMAJOR.MINOR Tags and Push All Commit and Tags
+      - name: Update vMAJOR/vMAJOR.MINOR tags and push
         run: |
           git tag --force "v${MAJOR}" HEAD
           git tag --force "v${MAJOR}.${MINOR}" HEAD
@@ -46,7 +47,7 @@ jobs:
           MAJOR: ${{ steps.cz_bump.outputs.major }}
           MINOR: ${{ steps.cz_bump.outputs.minor }}
           NEW_VERSION: ${{ steps.cz_bump.outputs.new-version }}
-      - name: Extract changelog for this release
+      - name: Extract changelog for release
         id: changelog
         run: |
           NOTES=$(uv run cz changelog --dry-run)
@@ -54,7 +55,7 @@ jobs:
           echo "notes<<EOF" >> "$GITHUB_OUTPUT"
           echo "$NOTES" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
-      - name: Create GitHub Release
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.cz_bump.outputs.new_version }}

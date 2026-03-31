@@ -39,11 +39,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: astral-sh/setup-uv@v7
-    - name: uv sync
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v7
+    - name: Run uv sync
       run: uv sync
       shell: bash
-    - name: Validate and Process Inputs
+    - name: Validate and process inputs
       run: uv run scripts/validate_and_process_inputs.py
       shell: bash
       working-directory: ${{ github.action_path }}
@@ -52,7 +53,7 @@ runs:
         INPUT_SUBCOMMAND: ${{ inputs.subcommand }}
         INPUT_ANSWERS_FILE: ${{ inputs.answers-file }}
         INPUT_PRERELEASES: ${{ inputs.prereleases }}
-    - name: Run 'copier check-update' and Set Outputs
+    - name: Run 'copier check-update' and set outputs
       id: check-update-and-set-outputs
       if: inputs.subcommand == 'check-update'
       run: uv run scripts/run_check_update_and_set_outputs.py
