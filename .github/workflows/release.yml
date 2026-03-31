@@ -27,7 +27,7 @@ jobs:
         run: |
           uv run cz bump --changelog --yes
 
-          NEW_VERSION=$(cz version --project)
+          NEW_VERSION=$(uv run cz version --project)
           MAJOR=$(echo "$NEW_VERSION" | cut -d. -f1)
           MINOR=$(echo "$NEW_VERSION" | cut -d. -f2)
           echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
@@ -48,7 +48,7 @@ jobs:
       - name: Extract changelog for this release
         id: changelog
         run: |
-          NOTES=$(cz changelog --dry-run)
+          NOTES=$(uv run cz changelog --dry-run)
 
           echo "notes<<EOF" >> "$GITHUB_OUTPUT"
           echo "$NOTES" >> "$GITHUB_OUTPUT"
