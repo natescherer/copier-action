@@ -41,6 +41,8 @@ runs:
   steps:
     - name: Setup uv
       uses: astral-sh/setup-uv@v7
+      with:
+        version-file: ${{ github.action_path }}/pyproject.toml
     - name: Run uv sync
       run: uv sync
       shell: bash
