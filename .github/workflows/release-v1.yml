@@ -1,0 +1,63 @@
+name: Release v1.0.0
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+      - name: Run uv sync
+        run: uv sync
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Extract changelog for release
+        id: changelog
+        run: |
+          CHANGELOG=$(uv run cz changelog --dry-run | tail -n +3)
+
+          echo "changelog<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$CHANGELOG" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Bump version and update changelog
+        id: cz_bump
+        run: |
+          uv run cz bump --changelog --yes --increment MAJOR
+
+          NEW_VERSION=$(uv run cz version --project)
+          MAJOR=$(echo "$NEW_VERSION" | cut -d. -f1)
+          MINOR=$(echo "$NEW_VERSION" | cut -d. -f2)
+
+          echo "new-version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "major=${MAJOR}" >> "$GITHUB_OUTPUT"
+          echo "minor=${MINOR}" >> "$GITHUB_OUTPUT"
+      - name: Update vMAJOR/vMAJOR.MINOR tags and push
+        run: |
+          git tag --force "v${MAJOR}" HEAD
+          git tag --force "v${MAJOR}.${MINOR}" HEAD
+
+          git push origin HEAD \
+            "refs/tags/v${NEW_VERSION}" \
+            --force "refs/tags/v${MAJOR}.${MINOR}" \
+            --force "refs/tags/v${MAJOR}"
+        env:
+          MAJOR: ${{ steps.cz_bump.outputs.major }}
+          MINOR: ${{ steps.cz_bump.outputs.minor }}
+          NEW_VERSION: ${{ steps.cz_bump.outputs.new-version }}
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.cz_bump.outputs.new-version }}
+          body: ${{ steps.changelog.outputs.changelog }}
