@@ -25,7 +25,7 @@ jobs:
       - name: Bump version and update changelog
         id: cz_bump
         run: |
-          cz bump --changelog --yes
+          uv run cz bump --changelog --yes
 
           NEW_VERSION=$(cz version --project)
           MAJOR=$(echo "$NEW_VERSION" | cut -d. -f1)
