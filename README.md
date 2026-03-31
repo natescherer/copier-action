@@ -99,13 +99,13 @@ jobs:
             Repository ${{ github.repository }} has a new template update available. Current version is ${{ steps.copier.outputs.current_version }}, latest version is ${{ steps.copier.outputs.latest_version }}.
         env:
           APPRISE_URL: ${{ secrets.APPRISE_URL }}
-    workflow-keepalive:
-      if: github.event_name == 'schedule'
-      runs-on: ubuntu-latest
-      permissions:
-        actions: write
-      steps:
-        - uses: liskin/gh-workflow-keepalive@v1
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
 ```
 
 ---
