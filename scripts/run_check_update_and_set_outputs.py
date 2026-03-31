@@ -17,6 +17,7 @@ def main():
     """Runs 'copier check-update' and sets Action outputs."""
     copier = local["copier"]
 
+    print("Running copier...")
     copier_output = copier(
         "check-update",
         COPIER_ABSOLUTE_PATH,
@@ -35,10 +36,16 @@ def main():
             file=sys.stderr,
         )
         sys.exit(1)
+    print(f"Copier output was: {update_data}")
 
     with Path(os.environ["GITHUB_OUTPUT"]).open("a") as f:
+        print(f"Setting Output: current-version={update_data['current_version']}")
         f.write(f"current-version={update_data['current_version']}\n")
+        print(f"Setting Output: latest-version={update_data['latest_version']}")
         f.write(f"latest-version={update_data['latest_version']}\n")
+        print(
+            f"Setting Output: update-available={'true' if update_data['update_available'] else 'false'}"
+        )
         f.write(
             f"update-available={'true' if update_data['update_available'] else 'false'}\n"
         )
