@@ -61,10 +61,13 @@ All outputs are namespaced by the subcommand that produced them.
 By design, this action only executes copier. If you are checking for updates, you will
 need to *do* something with the fact that an update is available.
 
-An example workflow is
-provided below that uses [apprise](https://github.com/caronc/apprise), a Python library
-that has the ability to send notification messages to many different applications and
-services.
+An example workflow is provided below that uses
+[apprise](https://github.com/caronc/apprise), a Python library that has the ability to
+send notification messages to many different applications and services. Also included is
+the action
+[liskin/gh-workflow-keepalive](https://github.com/liskin/gh-workflow-keepalive), which
+works around the issue of GitHub automatically disabling scheduled workflow executions
+on repos that haven't had activity in 60 days.
 
 ```yaml
 name: Weekly Copier Template Update Check
@@ -76,6 +79,7 @@ on:
 
 jobs:
   copier-check-update:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -95,6 +99,13 @@ jobs:
             Repository ${{ github.repository }} has a new template update available. Current version is ${{ steps.copier.outputs.current_version }}, latest version is ${{ steps.copier.outputs.latest_version }}.
         env:
           APPRISE_URL: ${{ secrets.APPRISE_URL }}
+    workflow-keepalive:
+      if: github.event_name == 'schedule'
+      runs-on: ubuntu-latest
+      permissions:
+        actions: write
+      steps:
+        - uses: liskin/gh-workflow-keepalive@v1
 ```
 
 ---
