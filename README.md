@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Ensures tags are checked out
       - name: Check for Copier Template Updates
@@ -91,12 +91,14 @@ jobs:
         with:
           subcommand: check-update
       - name: Notify if Update is Available
-        if: steps.copier.outputs.update_available == 'true'
+        if: steps.copier.outputs.check-update_update_available == 'true'
         uses: cstuder/apprise-ga@v3.1.0
         with:
           title: ${{ github.repository }} Template Update Available
-          message: >
-            Repository ${{ github.repository }} has a new template update available. Current version is ${{ steps.copier.outputs.current_version }}, latest version is ${{ steps.copier.outputs.latest_version }}.
+          message: |
+            Repository ${{ github.repository }} has a new template update available.
+
+            Current version is ${{ steps.copier.outputs.check-update_current_version }}, latest version is ${{ steps.copier.outputs.check-update_latest_version }}.
         env:
           APPRISE_URL: ${{ secrets.APPRISE_URL }}
   workflow-keepalive:
