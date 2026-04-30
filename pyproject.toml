@@ -38,7 +38,7 @@ dev = [
   "mypy==1.19.1",
   "poethepoet==0.42.1",
   "pre-commit==4.5.1",
-  "ruff==0.15.7",
+  "ruff==0.15.12",
   "rumdl==0.1.59",
   "tombi==0.9.9",
 ]
