@@ -35,7 +35,7 @@ repository = "https://github.com/copier-org/copier-action"
 dev = [
   "codespell[toml]==2.4.2",
   "commitizen==4.13.9",
-  "mypy==1.19.1",
+  "mypy==1.20.2",
   "poethepoet==0.42.1",
   "pre-commit==4.5.1",
   "ruff==0.15.7",
