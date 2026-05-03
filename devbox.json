@@ -8,7 +8,7 @@
     "git@2.53.0",
     "prettier@3.6.2",
     "shellcheck@0.11.0",
-    "uv@0.10.12"
+    "uv@0.11.8"
   ],
   "env": {
     "GIT_EXTERNAL_DIFF": "difft"
