@@ -39,7 +39,7 @@ dev = [
   "poethepoet==0.42.1",
   "pre-commit==4.5.1",
   "ruff==0.15.7",
-  "rumdl==0.1.59",
+  "rumdl==0.1.88",
   "tombi==0.9.9",
 ]
 
