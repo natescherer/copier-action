@@ -1,51 +1,51 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "act@0.2.84": {
-      "last_modified": "2026-03-21T07:29:51Z",
-      "resolved": "github:NixOS/nixpkgs/09061f748ee21f68a089cd5d91ec1859cd93d0be#act",
+    "act@0.2.89": {
+      "last_modified": "2026-09-26T02:47:14Z",
+      "resolved": "github:NixOS/nixpkgs/d54020a6ac3211e9f4201631bdf67678818c0cdf#act",
       "source": "devbox-search",
-      "version": "0.2.84",
+      "version": "0.2.89",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qwvs8niyi3qc6a0bmd62kkmn7rwzcbrl-act-0.2.84",
+              "path": "/nix/store/f0qjw0ldpfk17a41wfzg7qagcg0a1m6d-act-0.2.89",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qwvs8niyi3qc6a0bmd62kkmn7rwzcbrl-act-0.2.84"
+          "store_path": "/nix/store/f0qjw0ldpfk17a41wfzg7qagcg0a1m6d-act-0.2.89"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f9wngs9d2j4zxp26wdmp6phqhnqg02sf-act-0.2.84",
+              "path": "/nix/store/mmvya81vd0kc1akn9nhfnq4qysns014a-act-0.2.89",
               "default": true
             }
           ],
-          "store_path": "/nix/store/f9wngs9d2j4zxp26wdmp6phqhnqg02sf-act-0.2.84"
+          "store_path": "/nix/store/mmvya81vd0kc1akn9nhfnq4qysns014a-act-0.2.89"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/49iip3qqd809mbjnf3flrphkg03cka9z-act-0.2.84",
+              "path": "/nix/store/8jl3zr56bwggpxwc4si162xd68kvcz9l-act-0.2.89",
               "default": true
             }
           ],
-          "store_path": "/nix/store/49iip3qqd809mbjnf3flrphkg03cka9z-act-0.2.84"
+          "store_path": "/nix/store/8jl3zr56bwggpxwc4si162xd68kvcz9l-act-0.2.89"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mx2k3zxrqgfpm046n3q935cv6jkzphm8-act-0.2.84",
+              "path": "/nix/store/x64hyqx2m7k7djhjgpfhw1dz8frnd468-act-0.2.89",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mx2k3zxrqgfpm046n3q935cv6jkzphm8-act-0.2.84"
+          "store_path": "/nix/store/x64hyqx2m7k7djhjgpfhw1dz8frnd468-act-0.2.89"
         }
       }
     },
