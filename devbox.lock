@@ -49,51 +49,51 @@
         }
       }
     },
-    "actionlint@1.7.11": {
-      "last_modified": "2026-03-21T07:29:51Z",
-      "resolved": "github:NixOS/nixpkgs/09061f748ee21f68a089cd5d91ec1859cd93d0be#actionlint",
+    "actionlint@1.7.12": {
+      "last_modified": "2026-09-26T02:47:14Z",
+      "resolved": "github:NixOS/nixpkgs/d54020a6ac3211e9f4201631bdf67678818c0cdf#actionlint",
       "source": "devbox-search",
-      "version": "1.7.11",
+      "version": "1.7.12",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qgjfg7ybpnpyi7ka9c35synp512fw4az-actionlint-1.7.11",
+              "path": "/nix/store/vzlnbs651kcf8i0jz8j0md4gj0hl12ia-actionlint-1.7.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qgjfg7ybpnpyi7ka9c35synp512fw4az-actionlint-1.7.11"
+          "store_path": "/nix/store/vzlnbs651kcf8i0jz8j0md4gj0hl12ia-actionlint-1.7.12"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/b4bgjjnmpi94k2fw2fj73cjmsn7kfg4i-actionlint-1.7.11",
+              "path": "/nix/store/8nwbx3mnrmm8j4h8wf7gw0ll05rs19vp-actionlint-1.7.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/b4bgjjnmpi94k2fw2fj73cjmsn7kfg4i-actionlint-1.7.11"
+          "store_path": "/nix/store/8nwbx3mnrmm8j4h8wf7gw0ll05rs19vp-actionlint-1.7.12"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/d8c0fmg4gaijsz2j9iccqnv2p6lxnj7k-actionlint-1.7.11",
+              "path": "/nix/store/w4rjv0ikr5r5x54w758c8ck2016nmzsx-actionlint-1.7.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/d8c0fmg4gaijsz2j9iccqnv2p6lxnj7k-actionlint-1.7.11"
+          "store_path": "/nix/store/w4rjv0ikr5r5x54w758c8ck2016nmzsx-actionlint-1.7.12"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/95708my6vy5j8brwh90fcw7h9xkfbv6s-actionlint-1.7.11",
+              "path": "/nix/store/l1mk756h2hqw22g5ba6ppipar40ivij7-actionlint-1.7.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/95708my6vy5j8brwh90fcw7h9xkfbv6s-actionlint-1.7.11"
+          "store_path": "/nix/store/l1mk756h2hqw22g5ba6ppipar40ivij7-actionlint-1.7.12"
         }
       }
     },
